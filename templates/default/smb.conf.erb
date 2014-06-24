@@ -1,0 +1,20 @@
+# Do not change this file manually.
+# Any changes will be deleted on the next Chef run
+
+[global]
+<%- @globals.each do |k,v| %>
+  <%= k.gsub('_', ' ') %> = <%= v %>
+<%- end %>
+<%- @idmap.each do |wg,config| %>
+  <%- config.each do |k,v| %>
+  idmap config <%= wg %> : <%= k %> = <%= v %>
+  <%- end %>
+<%- end %>
+
+<%- @shares.each do |share,config| %>
+[<%= share %>]
+  <%- config.each do |k,v| %>
+  <%= k.gsub('_', ' ') %> = <%= v %>
+  <%- end %>
+
+<%- end %>
