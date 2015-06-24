@@ -23,11 +23,11 @@ include_recipe 'samba::configuration'
 
 include_recipe 'nsswitch::default'
 
-nsswitch_source :passwd do
+nsswitch_source 'passwd' do
   param "winbind"
 end
 
-nsswitch_source :group do
+nsswitch_source 'group' do
   param "winbind"
 end
 
