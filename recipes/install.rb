@@ -14,6 +14,9 @@
 
 package 'samba'
 
+# This is to work around a bug in Samba on Ubuntu
+package 'winbind'
+
 puts "winbind.configure = #{node.samba.winbind.configure}"
 
 if node.samba.winbind.configure
@@ -23,7 +26,6 @@ if node.samba.winbind.configure
 end
 
 service 'smbd' do
-  provider Chef::Provider::Service::Upstart
   if node.samba.globals['server_role'] == 'dc'
     action [ :disable, :stop ]
   else
@@ -33,13 +35,11 @@ service 'smbd' do
 end
 
 service 'nmbd' do
-  provider Chef::Provider::Service::Upstart
   action [ :enable, :start ]
   subscribes :restart, 'template[/etc/samba/smb.conf]'
 end
 
 service 'samba-ad-dc' do
-  provider Chef::Provider::Service::Upstart
   if node.samba.globals['server_role'] == 'dc'
     action [ :enable, :start ]
     subscribes :restart, 'template[/etc/samba/smb.conf]'
@@ -50,7 +50,6 @@ end
 
 if node.samba.winbind.configure
   service 'winbind' do
-    provider Chef::Provider::Service::Upstart
     if node.samba.globals['server_role'] == 'dc'
       action [ :disable, :stop ]
     else

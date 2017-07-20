@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 missing_plugs = []
-%w(vagrant-berkshelf vagrant-chef-zero vagrant-libvirt vagrant-omnibus).each do |plug|
+%w(vagrant-chef-zero vagrant-libvirt vagrant-omnibus).each do |plug|
   missing_plugs << plug unless Vagrant.has_plugin? plug
 end
 
@@ -17,16 +17,15 @@ config_workstation = {}
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "opscode-ubuntu-14.04"
-  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box"
+  # I had to recreate this image so it worked in libvirt. The stable interface
+  # naming broke things.
+  config.vm.box = "ubuntu-16.04"
 
   config.chef_zero.chef_repo_path = 'zero'
-  config.omnibus.chef_version = :latest
+  config.omnibus.chef_version = '12.19.36'
 
-  #config.vm.synced_folder '.', '/vagrant', type: '9p'
-
-  config.vm.define 'uc1404' do |dc|
-    dc.vm.hostname = 'uc1404.chef.lan'
+  config.vm.define 'uc1604' do |dc|
+    dc.vm.hostname = 'uc1604.chef.lan'
 
     dc.vm.provision 'chef_client' do |chef|
       chef.json = config_controller.merge override
@@ -34,8 +33,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define 'uw1404' do |dc|
-    dc.vm.hostname = 'uw1404.chef.lan'
+  config.vm.define 'uw1604' do |dc|
+    dc.vm.hostname = 'uw1604.chef.lan'
 
     dc.vm.provision 'chef_client' do |chef|
       chef.json = config_workstation.merge override

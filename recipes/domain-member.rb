@@ -1,4 +1,4 @@
-# Copyright 2014 Lyle Dietz
+# Copyright 2014, 2017 Lyle Dietz
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 include_recipe 'samba::domain-variables'
 
-node.default['samba']['globals']['server_role'] = 'member' if node.samba.globals.server_role.nil?
+node.default['samba']['globals']['server_role'] = 'member' if node['samba']['globals']['server_role'].nil?
 node.default['samba']['globals']['security'] = 'ads'
 
 include_recipe 'samba::install'
@@ -25,13 +25,15 @@ include_recipe 'nsswitch::default'
 
 nsswitch_source 'passwd' do
   param "winbind"
+  action :add
 end
 
 nsswitch_source 'group' do
   param "winbind"
+  action :add
 end
 
-joiner = search(:samba, "id:#{node.samba.winbind.join_user}").first
+joiner = search(:samba, "id:#{node['samba']['winbind']['join_user']}").first
 
 execute 'Join AD' do
   command "net ads join -U #{joiner['id']}%#{joiner['password']}"

@@ -1,7 +1,7 @@
 DEPENDENCIES
   nsswitch
-    git: git://github.com/sysbot/nsswitch-chef.git
-    revision: 98a0bc87a59377734699f21b570b4e59472d634b
+    git: https://github.com/sysbot/nsswitch-chef.git
+    revision: 9a28e3fe9cea987a20c053e378e41f6035606bd0
   samba
     path: .
     metadata: true
@@ -9,10 +9,10 @@ DEPENDENCIES
     path: test/cookbooks/samba-test
 
 GRAPH
-  apt (2.4.0)
+  apt (6.1.3)
   nsswitch (0.1.0)
-  resolver (1.1.4)
-  samba (0.0.1)
+  resolver (2.0.1)
+  samba (0.0.2)
     apt (>= 0.0.0)
     nsswitch (>= 0.0.0)
   samba-test (0.0.1)

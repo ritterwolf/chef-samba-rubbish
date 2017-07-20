@@ -5,9 +5,11 @@
 <%- @globals.each do |k,v| %>
   <%= k.gsub('_', ' ') %> = <%= v %>
 <%- end %>
-<%- @idmap.each do |wg,config| %>
-  <%- config.each do |k,v| %>
-  idmap config <%= wg %> : <%= k %> = <%= v %>
+<%- if @globals['server_role'] != 'dc' %>
+  <%- @idmap.each do |wg,config| %>
+    <%- config.each do |k,v| %>
+    idmap config <%= wg %> : <%= k %> = <%= v %>
+    <%- end %>
   <%- end %>
 <%- end %>
 
